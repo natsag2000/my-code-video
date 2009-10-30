@@ -1,0 +1,5 @@
+install codeswarm:
+  make install-codeswarm
+
+usage:
+  make all PROJECT_PATH=/svn/path/to/project PROJECT_NAME=Project_name
