@@ -14,7 +14,8 @@
 PROJECT_PATH=http://path/to/svnrepo
 PROJECT_NAME="test"
 
-CONFIG_FILE=config/myconfig.config
+CONFIG_FILE=myconfig.config
+CONFIG_FILE_PATH=config/$(CONFIG_FILE)
 
 ACTIVITY_LOG = activity.log
 ACTIVITY_XML = my_activity.xml
@@ -22,7 +23,8 @@ ACTIVITY_XML = my_activity.xml
 SVN=$(shell which svn)
 ANT=$(shell which ant)
 PYTHON=$(shell which python)
-FFMPEG=$(shell which ffpmeg)
+FFMPEG=$(shell which ffmpeg)
+SH=$(shell which sh)
 
 CODESWARM_URL="http://codeswarm.googlecode.com/svn/trunk/"
 CODESWARM=/home/nagi/sources/codeswarm
@@ -33,10 +35,10 @@ CONVERT_CMD=$(CODESWARM)/convert_logs/convert_logs.py
 VIDEO_CMD=$(FFMPEG) -f image2 -r 24 -i ./frames/code_swarm-%05d.png /tmp/$(PROJECT_NAME).mpg
 
 all: framesfolder checkout create-log convert-log create-frames create-video
-	echo "";
-	echo "----------------------------------------";
-	echo "DONE. Saved /tmp/$(PROJECT_NAME).mpg file!";
-	echo "----------------------------------------";
+	@echo "";
+	@echo "----------------------------------------";
+	@echo "DONE. Saved /tmp/$(PROJECT_NAME).mpg file!";
+	@echo "----------------------------------------";
 
 framesfolder:
 	test -d $(FRAMES) || mkdir $(FRAMES)
@@ -51,9 +53,9 @@ convert-log:
 	$(PYTHON) $(CONVERT_CMD) -s $(ACTIVITY_LOG) -o $(ACTIVITY_XML)
 
 create-frames:
-	cp $(ACTIVITY_XML) $(DATA) && \
-	cp $(CONFIG_FILE) $(DATA)/ && \
-	cd $(CODESWARM); sh run.sh data/$(CONFIG_FILE)
+	cp $(ACTIVITY_XML) $(DATA);
+	cp $(CONFIG_FILE_PATH) $(DATA);
+	cd $(CODESWARM); $(SH) run.sh data/$(CONFIG_FILE)
 
 create-video:
 	cd $(CODESWARM); $(VIDEO_CMD)
@@ -65,7 +67,7 @@ install-codeswarm: download-codeswarm
 	cd $(CODESWARM); $(ANT)
 
 clean:
-	rm $(FRAMES)/*.png;
-	rm -rf $(PROJECT_NAME);
-	rm $(ACTIVITY_LOG);
-	rm $(ACTIVITY_XML);
+	@rm -f $(FRAMES)/*.png;
+	@rm -rf $(PROJECT_NAME);
+	@rm -f $(ACTIVITY_LOG);
+	@rm -f $(ACTIVITY_XML);
