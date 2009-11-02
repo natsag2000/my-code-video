@@ -70,6 +70,8 @@ usage:
 	@echo ""
 	@echo "Create a video from subversion repository using codeswarm."
 	@echo ""
+	@echo "Requires: Subversion, ffmpeg, python, ant"
+	@echo ""
 	@echo "Usage:"
 	@echo ""
 	@echo "  make all PROJECT_PATH=/project/svn/repo PROJECT_NAME=project_name"
