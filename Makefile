@@ -66,6 +66,15 @@ download-codeswarm:
 install-codeswarm: download-codeswarm
 	cd $(CODESWARM); $(ANT)
 
+usage:
+	@echo ""
+	@echo "Create a video from subversion repository using codeswarm."
+	@echo ""
+	@echo "Usage:"
+	@echo ""
+	@echo "  make all PROJECT_PATH=/project/svn/repo PROJECT_NAME=project_name"
+	@echo ""
+
 clean:
 	@rm -f $(FRAMES)/*.png;
 	@rm -rf $(PROJECT_NAME);
